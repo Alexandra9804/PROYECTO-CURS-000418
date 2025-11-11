@@ -1,9 +1,6 @@
-package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.autorizacion;
+package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.evaluacion;
 
-public enum AutorizacionEstadoEnum
-{
-    REGISTRADA(10, "Registrada"),
-    PENDIENTE_DE_ASIGNAR_EVALUADOR(11, "Pendiente de Asignar Evaluador"),
+public enum EvaluacionEstadoEnum {
     EN_EVALUACION(12, "En Evaluación"),
     OBSERVADA(13, "Observada"),
     APROBADA(14, "Aprobada"),
@@ -12,7 +9,7 @@ public enum AutorizacionEstadoEnum
     private Integer valor;
     private String descripcion;
 
-    AutorizacionEstadoEnum(Integer valor, String descripcion) {
+    EvaluacionEstadoEnum(Integer valor, String descripcion) {
         this.valor = valor;
         this.descripcion = descripcion;
     }

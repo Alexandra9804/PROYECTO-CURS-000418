@@ -3,9 +3,13 @@ package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.autorizacion.constant.AutorizacionMessageConstant;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.base.Domain;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.exceptions.DomainException;
+import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.usuario.RolEnum;
+import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.usuario.Usuario;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import static java.util.Objects.isNull;
 
 public class Autorizacion extends Domain {
 
@@ -16,20 +20,61 @@ public class Autorizacion extends Domain {
     private AutorizacionEstadoEnum estadoAutorizacion;
     private String motivo;
 
-    public Autorizacion(Long idUsuarioSolicitante, BigDecimal montoPago) {
-        this.idUsuarioSolicitante = idUsuarioSolicitante;
+    public Autorizacion(Usuario usuario, BigDecimal montoPago) throws AutorizacionException {
+        this.validarUsuario(usuario);
+        this.idUsuarioSolicitante = usuario.getId();
+        this.validarMontoPago(montoPago);
         this.montoPago = montoPago;
         this.fechaSolicitud = LocalDateTime.now();
         this.estadoAutorizacion = AutorizacionEstadoEnum.REGISTRADA;
     }
 
-   public void enviarParaAsignarEvaluador() throws DomainException {
+   private boolean validarUsuario(Usuario usuario) throws AutorizacionException {
+       if (isNull(usuario) || isNull(usuario.getId())){
+           throw new AutorizacionException(AutorizacionMessageConstant.ERROR_USUARIO_REQUERIDO);
+       }
+
+       if (!usuario.isFlgHabilitado()){
+           throw  new AutorizacionException(String.format(AutorizacionMessageConstant.ERROR_USUARIO_INHABILITADO, usuario.getId()));
+       }
+
+       if (usuario.getRol() != RolEnum.REGISTRADOR){
+           throw  new AutorizacionException(String.format(AutorizacionMessageConstant.ERROR_ROL_NO_PUEDE_REGISTRAR, usuario.getId(), usuario.getRol().getDescription()));
+       }
+       return true;
+   }
+
+   private boolean validarMontoPago(BigDecimal montoPago) throws AutorizacionException {
+        if(isNull(montoPago)){
+            throw new AutorizacionException(AutorizacionMessageConstant.ERROR_MONTO_PAGO_REQUERIDO);
+        }
+
+        if(montoPago.compareTo(BigDecimal.ZERO) <= 0){
+            throw new AutorizacionException(AutorizacionMessageConstant.ERROR_MONTO_PAGO_MAYOR_A_CERO);
+        }
+
+        return true;
+   }
+
+    public void pendienteDeAsignarEvaluador() throws DomainException {
         if(estadoAutorizacion != AutorizacionEstadoEnum.REGISTRADA && estadoAutorizacion != AutorizacionEstadoEnum.OBSERVADA) {
             throw new AutorizacionException(AutorizacionMessageConstant.ERROR_ENVIO_NO_PERMITIDO);
         }
 
         this.estadoAutorizacion = AutorizacionEstadoEnum.PENDIENTE_DE_ASIGNAR_EVALUADOR;
-   }
+    }
+
+    public void enEvaluacion(Usuario evaluador) throws AutorizacionException {
+        if (estadoAutorizacion != AutorizacionEstadoEnum.PENDIENTE_DE_ASIGNAR_EVALUADOR) {
+            throw new AutorizacionException(AutorizacionMessageConstant.ERROR_ESTADO_NO_PERMITE_EVALUACION);
+        }
+
+        if (evaluador.getRol() != RolEnum.EVALUADOR) {
+            throw new AutorizacionException(String.format(AutorizacionMessageConstant.ERROR_ROL_NO_PUEDE_EVALUAR, evaluador.getId(), evaluador.getRol().getDescription()));
+        }
+
+        this.estadoAutorizacion = AutorizacionEstadoEnum.EN_EVALUACION;
+    }
 
     public Long getIdUsuarioSolicitante() {
         return idUsuarioSolicitante;
