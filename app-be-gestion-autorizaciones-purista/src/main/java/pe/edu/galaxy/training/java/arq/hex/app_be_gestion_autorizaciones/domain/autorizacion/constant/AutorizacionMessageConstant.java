@@ -18,6 +18,8 @@ public final class AutorizacionMessageConstant {
 
     public static final String ERROR_ROL_NO_PUEDE_EVALUAR = "El usuario con id: %d posee el rol '%s', el cual no tiene permisos para evaluar autorizaciones.";
 
+    public static final String ERROR_RESULTADO_REQUERIDO = "Se requiere el resultado de la evaluación para cambiar el estado de la autorización.";
+
     private AutorizacionMessageConstant(){};
 }
 

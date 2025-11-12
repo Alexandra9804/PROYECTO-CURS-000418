@@ -1,10 +1,9 @@
 package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.evaluacion;
 
 public enum EvaluacionEstadoEnum {
-    EN_EVALUACION(12, "En Evaluación"),
-    OBSERVADA(13, "Observada"),
-    APROBADA(14, "Aprobada"),
-    RECHAZADA(15, "Rechazada");
+    EN_EVALUACION(202, "En Evaluación"),
+    EVALUADO(203, "Evaluado"),
+    NOTIFICADO(204, "Notificado");
 
     private Integer valor;
     private String descripcion;

@@ -2,6 +2,7 @@ package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain
 
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.autorizacion.constant.AutorizacionMessageConstant;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.base.Domain;
+import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.evaluacion.Evaluacion;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.exceptions.DomainException;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.usuario.RolEnum;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.usuario.Usuario;
@@ -18,7 +19,6 @@ public class Autorizacion extends Domain {
     private LocalDateTime fechaSolicitud;
     private LocalDateTime fechaFinalizacion;
     private AutorizacionEstadoEnum estadoAutorizacion;
-    private String motivo;
 
     public Autorizacion(Usuario usuario, BigDecimal montoPago) throws AutorizacionException {
         this.validarUsuario(usuario);
@@ -56,7 +56,7 @@ public class Autorizacion extends Domain {
         return true;
    }
 
-    public void pendienteDeAsignarEvaluador() throws DomainException {
+    public void enviarParaAsignacion() throws DomainException {
         if(estadoAutorizacion != AutorizacionEstadoEnum.REGISTRADA && estadoAutorizacion != AutorizacionEstadoEnum.OBSERVADA) {
             throw new AutorizacionException(AutorizacionMessageConstant.ERROR_ENVIO_NO_PERMITIDO);
         }
@@ -64,7 +64,7 @@ public class Autorizacion extends Domain {
         this.estadoAutorizacion = AutorizacionEstadoEnum.PENDIENTE_DE_ASIGNAR_EVALUADOR;
     }
 
-    public void enEvaluacion(Usuario evaluador) throws AutorizacionException {
+    public void iniciarEvaluacion(Usuario evaluador) throws AutorizacionException {
         if (estadoAutorizacion != AutorizacionEstadoEnum.PENDIENTE_DE_ASIGNAR_EVALUADOR) {
             throw new AutorizacionException(AutorizacionMessageConstant.ERROR_ESTADO_NO_PERMITE_EVALUACION);
         }
@@ -74,6 +74,19 @@ public class Autorizacion extends Domain {
         }
 
         this.estadoAutorizacion = AutorizacionEstadoEnum.EN_EVALUACION;
+    }
+
+    public void actualizarEstadoPorEvaluacion(Evaluacion evaluacion) throws AutorizacionException {
+        if (isNull(evaluacion) || isNull(evaluacion.getResultado())) {
+            throw new AutorizacionException(AutorizacionMessageConstant.ERROR_RESULTADO_REQUERIDO);
+        }
+
+        switch (evaluacion.getResultado()) {
+            case APROBADA -> this.estadoAutorizacion = AutorizacionEstadoEnum.APROBADA;
+            case OBSERVADA -> this.estadoAutorizacion = AutorizacionEstadoEnum.OBSERVADA;
+            case RECHAZADA -> this.estadoAutorizacion = AutorizacionEstadoEnum.RECHAZADA;
+        }
+
     }
 
     public Long getIdUsuarioSolicitante() {
@@ -94,10 +107,6 @@ public class Autorizacion extends Domain {
 
     public AutorizacionEstadoEnum getEstadoAutorizacion() {
         return estadoAutorizacion;
-    }
-
-    public String getMotivo() {
-        return motivo;
     }
 
     @Override
