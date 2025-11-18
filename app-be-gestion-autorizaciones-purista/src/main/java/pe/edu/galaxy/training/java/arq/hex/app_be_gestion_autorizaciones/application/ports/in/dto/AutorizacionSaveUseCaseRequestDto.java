@@ -1,16 +1,15 @@
-package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.dto;
+package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.ports.in.dto;
 
 import java.math.BigDecimal;
 
-public class AutorizacionSaveUseCaseResponseDto {
-    Long usuarioId;
-    BigDecimal montoPago;
+public class AutorizacionSaveUseCaseRequestDto {
+    private Long usuarioId;
+    private BigDecimal montoPago;
 
-    public AutorizacionSaveUseCaseResponseDto(Long usuarioId) {
-        this.usuarioId = usuarioId;
+    public AutorizacionSaveUseCaseRequestDto() {
     }
 
-    public AutorizacionSaveUseCaseResponseDto(Long usuarioId, BigDecimal montoPago) {
+    public AutorizacionSaveUseCaseRequestDto(Long usuarioId, BigDecimal montoPago) {
         this.usuarioId = usuarioId;
         this.montoPago = montoPago;
     }

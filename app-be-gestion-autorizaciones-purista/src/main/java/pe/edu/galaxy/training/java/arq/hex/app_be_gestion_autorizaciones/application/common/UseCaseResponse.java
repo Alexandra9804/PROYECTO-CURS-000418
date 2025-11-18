@@ -1,4 +1,4 @@
-package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.base;
+package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.common;
 
 public class UseCaseResponse<T> {
 

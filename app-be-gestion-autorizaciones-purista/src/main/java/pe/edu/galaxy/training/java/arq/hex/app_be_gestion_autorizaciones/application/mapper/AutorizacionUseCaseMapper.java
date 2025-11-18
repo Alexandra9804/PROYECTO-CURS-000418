@@ -1,7 +1,0 @@
-package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.mapper;
-
-import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.dto.AutorizacionSaveUseCaseResponseDto;
-
-public class AutorizacionUseCaseMapper {
-
-}
