@@ -1,7 +1,7 @@
 package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.autorizacion;
 
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.autorizacion.constant.AutorizacionMessageConstant;
-import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.base.Domain;
+import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.base.GenericDomain;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.evaluacion.Evaluacion;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.exceptions.DomainException;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.usuario.RolEnum;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 import static java.util.Objects.isNull;
 
-public class Autorizacion extends Domain {
+public class Autorizacion extends GenericDomain {
 
     private Long idUsuarioSolicitante;
     private BigDecimal montoPago;

@@ -1,9 +1,9 @@
 package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.usuario;
 
-import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.base.Domain;
+import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.base.GenericDomain;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.exceptions.DomainException;
 
-public class Usuario extends Domain {
+public class Usuario extends GenericDomain {
 
     private Long personaId;
     private String username;
