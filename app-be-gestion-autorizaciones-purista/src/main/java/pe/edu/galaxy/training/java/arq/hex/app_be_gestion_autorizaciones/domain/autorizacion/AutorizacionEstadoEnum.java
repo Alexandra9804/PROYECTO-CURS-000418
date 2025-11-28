@@ -1,5 +1,7 @@
 package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.autorizacion;
 
+import java.util.Arrays;
+
 public enum AutorizacionEstadoEnum
 {
     REGISTRADA(100, "Registrada"),
@@ -31,5 +33,12 @@ public enum AutorizacionEstadoEnum
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public static AutorizacionEstadoEnum getByValor(Integer valor){
+        return Arrays.stream(AutorizacionEstadoEnum.values())
+                .filter(tipo -> tipo.getValor().equals(valor))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Valor no válido"));
     }
 }

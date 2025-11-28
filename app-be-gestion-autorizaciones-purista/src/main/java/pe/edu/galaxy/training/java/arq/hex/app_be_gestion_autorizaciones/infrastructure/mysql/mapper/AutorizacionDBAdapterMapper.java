@@ -4,5 +4,5 @@ import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.infrastructure.mysql.entity.AutorizacionEntity;
 
 public interface AutorizacionDBAdapterMapper {
-    AutorizacionEntity toEntity(Autorizacion autorizacion);
+    AutorizacionEntity toEntity(Autorizacion autorizacionSavePortRequestDto);
 }

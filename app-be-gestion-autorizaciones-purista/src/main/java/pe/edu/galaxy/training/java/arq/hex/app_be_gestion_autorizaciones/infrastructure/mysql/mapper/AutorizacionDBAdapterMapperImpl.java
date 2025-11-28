@@ -8,15 +8,14 @@ import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.infrast
 public class AutorizacionDBAdapterMapperImpl implements AutorizacionDBAdapterMapper{
     @Override
     public AutorizacionEntity toEntity(Autorizacion autorizacion) {
-        return (AutorizacionEntity) AutorizacionEntity
+        return AutorizacionEntity
                 .builder()
-                .id(autorizacion.getId())
                 .idUsuarioSolicitante(autorizacion.getIdUsuarioSolicitante())
                 .montoPago(autorizacion.getMontoPago())
                 .fechaSolicitud(autorizacion.getFechaSolicitud())
                 .fechaFinalizacion(autorizacion.getFechaFinalizacion())
                 .estadoAutorizacion(autorizacion.getEstadoAutorizacion().getValor())
-                .estadoRegistro(autorizacion.getEstado().getValor())
                 .build();
     }
+
 }

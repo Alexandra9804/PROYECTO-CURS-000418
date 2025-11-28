@@ -20,7 +20,8 @@ public class Autorizacion extends GenericDomain {
     private LocalDateTime fechaFinalizacion;
     private AutorizacionEstadoEnum estadoAutorizacion;
 
-    public Autorizacion(Usuario usuario, BigDecimal montoPago) throws AutorizacionException {
+    public Autorizacion(Long id, Usuario usuario, BigDecimal montoPago) throws DomainException {
+        super(id);
         this.validarUsuario(usuario);
         this.idUsuarioSolicitante = usuario.getId();
         this.validarMontoPago(montoPago);

@@ -8,18 +8,14 @@ public class AutorizacionSaveUseCaseResponseDto {
     private Long autorizacionId;
     private Long usuarioId;
     private BigDecimal montoPago;
-    private LocalDateTime fechaSolicitud;
-    private String estado;
 
     public AutorizacionSaveUseCaseResponseDto() {
     }
 
-    public AutorizacionSaveUseCaseResponseDto(Long autorizacionId, Long usuarioId, BigDecimal montoPago, LocalDateTime fechaSolicitud, String estado) {
+    public AutorizacionSaveUseCaseResponseDto(Long autorizacionId, Long usuarioId, BigDecimal montoPago) {
         this.autorizacionId = autorizacionId;
         this.usuarioId = usuarioId;
         this.montoPago = montoPago;
-        this.fechaSolicitud = fechaSolicitud;
-        this.estado = estado;
     }
 
     public Long getAutorizacionId() {
@@ -46,19 +42,5 @@ public class AutorizacionSaveUseCaseResponseDto {
         this.montoPago = montoPago;
     }
 
-    public LocalDateTime getFechaSolicitud() {
-        return fechaSolicitud;
-    }
 
-    public void setFechaSolicitud(LocalDateTime fechaSolicitud) {
-        this.fechaSolicitud = fechaSolicitud;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 }

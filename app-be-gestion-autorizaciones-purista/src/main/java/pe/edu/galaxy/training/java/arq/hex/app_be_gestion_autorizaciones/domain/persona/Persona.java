@@ -10,7 +10,8 @@ public class Persona extends GenericDomain {
     private String apellidoPaterno;
     private String nroDocumentoIdentidad;
 
-    public Persona(String nombres, String apellidoMaterno, String apellidoPaterno, String nroDocumentoIdentidad) {
+    public Persona(Long id, String nombres, String apellidoMaterno, String apellidoPaterno, String nroDocumentoIdentidad) throws DomainException {
+        super(id);
         this.nombres = nombres;
         this.apellidoMaterno = apellidoMaterno;
         this.apellidoPaterno = apellidoPaterno;

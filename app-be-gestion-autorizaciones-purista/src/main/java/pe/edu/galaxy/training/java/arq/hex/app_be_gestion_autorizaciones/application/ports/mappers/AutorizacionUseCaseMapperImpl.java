@@ -1,6 +1,7 @@
 package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.ports.mappers;
 
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.ports.in.dto.AutorizacionSaveUseCaseResponseDto;
+import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.ports.out.dto.AutorizacionSavePortRequestDto;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.autorizacion.Autorizacion;
 
 public class AutorizacionUseCaseMapperImpl implements AutorizacionUseCaseMapper{
@@ -10,9 +11,7 @@ public class AutorizacionUseCaseMapperImpl implements AutorizacionUseCaseMapper{
             return new AutorizacionSaveUseCaseResponseDto(
                     idAutorizacionGenerado,
                     autorizacion.getIdUsuarioSolicitante(),
-                    autorizacion.getMontoPago(),
-                    autorizacion.getFechaSolicitud(),
-                    autorizacion.getEstadoAutorizacion().getDescripcion()
+                    autorizacion.getMontoPago()
             );
     }
 }

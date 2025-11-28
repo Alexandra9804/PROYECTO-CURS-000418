@@ -2,6 +2,7 @@ package pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.applic
 
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.common.UseCaseResponse;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.constant.AutorizacionErrorMessageConstant;
+import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.exceptions.AutorizacionApplicationException;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.exceptions.UsuarioApplicationException;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.ports.in.autorizacion.AutorizacionSaveUseCase;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.ports.in.dto.AutorizacionSaveUseCaseRequestDto;
@@ -10,7 +11,7 @@ import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.applica
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.ports.out.autorizacion.AutorizacionSavePort;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.application.ports.out.usuario.UsuarioFindByIdPort;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.autorizacion.Autorizacion;
-import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.autorizacion.AutorizacionException;
+import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.exceptions.DomainException;
 import pe.edu.galaxy.training.java.arq.hex.app_be_gestion_autorizaciones.domain.usuario.Usuario;
 
 public class AutorizacionGestionService implements AutorizacionSaveUseCase{
@@ -28,17 +29,31 @@ public class AutorizacionGestionService implements AutorizacionSaveUseCase{
     }
 
     @Override
-    public UseCaseResponse<AutorizacionSaveUseCaseResponseDto> saveAutorizacion(AutorizacionSaveUseCaseRequestDto requestDto) throws UsuarioApplicationException, AutorizacionException {
-        Usuario usuario = usuarioFindByIdPort.findById(requestDto.getUsuarioId())
-                .orElseThrow(() -> new UsuarioApplicationException(String.format(AutorizacionErrorMessageConstant.ERROR_USUARIO_NO_EXISTE, requestDto.getUsuarioId())));
+    public UseCaseResponse<AutorizacionSaveUseCaseResponseDto> saveAutorizacion(
+            AutorizacionSaveUseCaseRequestDto requestDto)
+            throws UsuarioApplicationException, AutorizacionApplicationException {
 
+        try {
 
-        Autorizacion autorizacion = new Autorizacion(usuario, requestDto.getMontoPago());
+            Usuario usuario = usuarioFindByIdPort.findById(requestDto.getUsuarioId())
+                    .orElseThrow(() -> new UsuarioApplicationException(
+                            String.format(
+                                    AutorizacionErrorMessageConstant.ERROR_USUARIO_NO_EXISTE,
+                                    requestDto.getUsuarioId()
+                            )));
 
-        Long idGenerado = autorizacionSavePort.save(autorizacion);
+            Autorizacion autorizacion =
+                    new Autorizacion(null, usuario, requestDto.getMontoPago());
 
-        AutorizacionSaveUseCaseResponseDto responseDto = autorizacionUseCaseMapper.toUseCaseResponse(idGenerado, autorizacion);
+            Long idGenerado = autorizacionSavePort.save(autorizacion);
 
-        return new UseCaseResponse<AutorizacionSaveUseCaseResponseDto>(responseDto);
+            AutorizacionSaveUseCaseResponseDto responseDto =
+                    autorizacionUseCaseMapper.toUseCaseResponse(idGenerado, autorizacion);
+
+            return new UseCaseResponse<>(responseDto);
+
+        } catch (DomainException e) {
+            throw new AutorizacionApplicationException(e.getMessage(), e);
+        }
     }
 }

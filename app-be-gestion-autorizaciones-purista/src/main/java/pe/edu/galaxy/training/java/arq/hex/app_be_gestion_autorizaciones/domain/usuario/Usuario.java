@@ -10,7 +10,11 @@ public class Usuario extends GenericDomain {
     private RolEnum rol;
     private boolean flgHabilitado;
 
-    public Usuario(Long personaId, String username, RolEnum rol, boolean flgHabilitado) {
+    public Usuario(Long id) throws DomainException {
+        super(id);
+    }
+    public Usuario(Long id, Long personaId, String username, RolEnum rol, boolean flgHabilitado) throws DomainException {
+        super(id);
         this.personaId = personaId;
         this.username = username;
         this.rol = rol;
